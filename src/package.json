@@ -1,0 +1,22 @@
+{
+  "name": "discord-bot",
+  "version": "1.0.0",
+  "description": "a bot to listen for user logins on a minecraft server",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "nodemon app.js",
+    "run": "node app.js"
+  },
+  "author": "hrHVN",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.22.1",
+    "dotenv": "^16.4.7",
+    "mcquery": "^1.0.3"
+  },
+  "devDependencies": {
+    "minecraft-protocol": "^1.26.5",
+    "nodemon": "^3.1.10"
+  }
+}

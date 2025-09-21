@@ -1,0 +1,11 @@
+{
+    "ignore": [
+        "*.txt",
+        "*.md",
+        "*.db",
+        "*.sqlite",
+        "*.config.js",
+		"*.JSON",
+        "*.tmp"
+    ]
+}
