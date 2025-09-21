@@ -11,7 +11,7 @@ const jsonFilePath = path.join(path.resolve('discord_restapi'),'registered_comma
 const discord_restapi = new REST().setToken(process.env.DISCORD_TOKEN);
 
 async function loadJson() {
-	console.log("\n Loading JSON ... \n");
+	//console.log("\n Loading JSON ... \n");
   try {
     const text = await readFile(jsonFilePath, 'utf8');
     return text ? JSON.parse(text) : [];
@@ -65,8 +65,12 @@ export async function Discord_Update_Commands() {
 		console.log("No new comands to send to API! Canceling API request.");
 		return;
 	}
-	else {
-		console.info("\rCanceling API call in testing !! \r", exisitng);
+	else if(process.env.NODE_ENV !== "production") {
+		console.info("\rCanceling API call in testing !! \r");
+		for (const [key, value] of Object.entries(exisitng)) {
+			console.log(value.name)
+			await addEntry(value.name);
+		}
 		return;
 	}
 	try {
@@ -76,7 +80,7 @@ export async function Discord_Update_Commands() {
 			Routes.applicationGuildCommands(process.env.DISCORD_ID, process.env.DISCORD_GUILD_ID),
 			{ body: exisitng }
 			);
-
+		for (const [key, value] of Object.entries(exisitng)) await addEntry(value.name);
 		console.log(`Successfully reloaded ${data.length} application (/) commands.`);
 	}
 	catch (error) {

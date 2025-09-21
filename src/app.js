@@ -24,8 +24,13 @@ const mc_query = new Query(process.env.MC_SERVER_URL, process.env.MC_SERVER_PORT
 const Admin_webhook = new WebhookClient({ url: process.env.DISCORD_WEBHOOK_ADMIN });
 const ForeverWorld_webhook = new WebhookClient({ url: process.env.DISCORD_WEBHOOK_FF });
 
-const WH_sendAdmin = async (message) => 				console.log(`[BOT] Spidey Bot: \n${message}`);// Admin_webhook.send({ content: message,username: '[BOT] Spidey Bot'	});
-const WH_sendForeverWorld = async (message) => 	console.log(`[BOT] Captain Hook - Server Watcher: \n${message}`);// ForeverWorld_webhook.send({content: message,username: '[BOT] Captain Hook - Server Watcher'});
+const WH_sendAdmin = async (message) => process.env.NODE_ENV !== "production" 
+	? console.log(`[BOT] Spidey Bot: \n${message}`)
+	: Admin_webhook.send({ content: message,username: '[BOT] Spidey Bot'	});
+
+const WH_sendForeverWorld = async (message) => process.env.NODE_ENV !== "production" 
+	? console.log(`[BOT] Captain Hook - Server Watcher: \n${message}`)
+	: ForeverWorld_webhook.send({content: message,username: '[BOT] Captain Hook - Server Watcher'});
 /*
 	Minecraft Query event handlers
 */
