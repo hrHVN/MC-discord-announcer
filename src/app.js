@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 import path from 'node:path';
 
 // Mojang
-import Query from 'mcquery';
 import { lunareclipse } from './utils/mojang_api.js';
 import onlinePlayers from './minecraft_server/OnlinePlayers.js';
 import { MinecraftQuery } from './minecraft_server/MinecraftQuery.js';
@@ -11,7 +10,6 @@ import filter_players_online from './minecraft_server/players_online.js'
 // Discord
 import { Discord_Update_Commands, Guild_Update_Commands } from './discord/discord_rest.js';
 import discordClient from './discord/DiscordClient.js';
-import { AdminWebhook } from './discord/webhook.js';
 import "./discord/client_listeners.js";
 
 dotenv.config();

@@ -1,6 +1,6 @@
 {
   "name": "discord-bot",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "a bot to listen for user logins on a minecraft server",
   "main": "app.js",
   "type": "module",
