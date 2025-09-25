@@ -14,10 +14,17 @@ DISCORD_PUB				= -- not used yet --
 ```
 # Sources
 Sources used to build this bot.
+
 [Minecraft Wiki](https://minecraft.wiki/w/Query#Example_implementations)
+
 [Github node-mcquery](https://github.com/kmpm/node-mcquery/tree/master)
+
 [Npm Discord.js](https://www.npmjs.com/package/discord.js)
+
 [Discord.js Docs](https://discordjs.guide/creating-your-bot/)
+
 [Mojang API](https://minecraft.wiki/w/Mojang_API)
+
 [Isometric rendering](https://crafatar.com)
+
 [lunareclipse.studio](https://docs.lunareclipse.studio/)
