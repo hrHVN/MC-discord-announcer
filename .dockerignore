@@ -1,9 +1,3 @@
-.git
-
-node_modules
-
-Dockerfile*
-
 *.env
 
 nodemon.json
