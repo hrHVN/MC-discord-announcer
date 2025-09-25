@@ -1,7 +1,8 @@
 # Misc
 gpt.js
 compose.yml
-*registered_commands.json
+src/json/*
+src/avatars/*
 # Database
 *.sqlite
 *.db

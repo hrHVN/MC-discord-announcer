@@ -8,6 +8,6 @@ RUN npm i --omit=dev
 
 COPY src/ ./
 
-EXPOSE 443
+#EXPOSE 443
 
 CMD ["node", "app.js"]
