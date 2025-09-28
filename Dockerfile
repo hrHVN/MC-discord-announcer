@@ -3,10 +3,10 @@ FROM node:latest
 
 WORKDIR /usr/share/app
 
-COPY src/ ./
+COPY src/package*.json .
 
 RUN npm i --omit=dev
 
-#COPY src/ ./
+COPY src/ ./
 
 CMD ["node", "app.js"]

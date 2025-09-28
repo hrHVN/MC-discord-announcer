@@ -17,13 +17,6 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v3
 
-      - name: List repository contents (debug)
-        run: |
-          echo "=== Repository root ==="
-          ls -R . 
-          echo "=== src folder ===" 
-          ls -R src
-
       - name: connect to Docker
         uses: docker/login-action@v3
         with:
