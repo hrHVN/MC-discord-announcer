@@ -15,7 +15,13 @@ export async function execute(event) {
 	await event.deferReply();
 
 	const { guildId, user } = event;
-	await onlinePlayers.updateServer(guildId,{ disable: "true" });
+	await onlinePlayers.updateServer(guildId,{ 
+		disable: "true",
+		disabled_reset_timer: "null",
+		disabled_timer: "null",
+		falsePosetive: "null",
+		server_suspension_multiplier: 1
+		 });
 
 	const server = onlinePlayers.data.find(d => d.guild_id == guildId);
 
