@@ -28,3 +28,20 @@ Sources used to build this bot.
 [Isometric rendering](https://crafatar.com)
 
 [lunareclipse.studio](https://docs.lunareclipse.studio/)
+
+## Docker Debug comands
+
+`$ sudo docker build -t mcbot:latest -f Dockerfile . --no-cache`
+
+`$ sudo docker build -t mcbot:latest -f Dockerfile .`
+
+`$ sudo docker compose -f test-compose.yml up`
+
+### Discord Embed colour support
+| Default 	| White		 | Aqua 		| Green 			| Blue | 
+| Yellow 	| Purple	 | LuminousVividPink  | Fuchsia 	| Gold | 
+| Orange 	| Red		 | Grey 		| Navy 				| DarkAqua | 
+| DarkGreen | DarkBlue	 | DarkPurple 	| DarkVividPink 	| DarkGold | 
+| DarkOrange| DarkRed	 | DarkGrey 	| DarkerGrey 		| LightGrey | 
+| DarkNavy	| Blurple	 | Greyple 		| DarkButNotBlack 	| NotQuiteBlack | 
+| Random
