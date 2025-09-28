@@ -22,6 +22,10 @@ export const data = new SlashCommandBuilder()
 				.setName('query_port')
 				.setDescription('Minecraft Query Port. _Remember to enable Query in server.properties_')
 				.setRequired(true))
+		.addStringOption(option =>
+			option
+				.setName('adminhook')
+				.setDescription('the webhook used for admin messages'))
 		.setContexts(InteractionContextType.Guild)
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 		.setNSFW(false);
@@ -30,9 +34,10 @@ export async function execute(event) {
 	await event.deferReply();
 
 	const { guildId, user } = event;
+	let adminHook = event.options?.getString('adminhook');
 
 	await onlinePlayers.addServer(guildId,
-		"",
+		adminHook || event.options.getString('webhook'),
 		event.options.getString('webhook') ,
 		event.options.getString('server_ip'),
 		event.options.getString('query_port')

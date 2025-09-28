@@ -25,7 +25,8 @@ export async function execute(event) {
 				{ name: '**/setup**', value: 'Use this command to update the server configuration' },
 				{ name: '**/disable**', value: 'Use this command to disable the server. This is usefull if the server is down for maintenace.' },
 				{ name: '**/enable**', value: "Use this command to reenable the server. This put's the server back in the query Loop"},
-				{ name: '**/ping**', value: 'play ping pong with the bot' }
+				{ name: '**/ping**', value: 'play ping pong with the bot' },
+				{ name: '**/myconfig**', value: 'See all the current settings!' },
 			)
 		}
 

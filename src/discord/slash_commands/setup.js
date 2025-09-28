@@ -19,6 +19,11 @@ export const data = new SlashCommandBuilder()
 				)
 		.addStringOption(option =>
 			option
+				.setName('adminhook')
+				.setDescription('the webhook for admin messages')
+				)
+		.addStringOption(option =>
+			option
 				.setName('server_ip')
 				.setDescription('Server IP or URL.')
 				)
@@ -80,7 +85,7 @@ export async function execute(event) {
 	});
 
 	[
-		'webhook','server_ip','query_port','rcon_port','rcon_password',
+		'adminhook','webhook','server_ip','query_port','rcon_port','rcon_password',
 		'avatar_login','avatar_login_crop','avatar_logout','avatar_logout_crop'
 	].forEach(option => {
 		let name;
@@ -101,6 +106,10 @@ export async function execute(event) {
 
 				case 'webhook':
 					newValues["watcher_hook"] = response;
+					break;
+
+				case 'adminhook':
+					newValues["admin_hook"] = response;
 					break;
 
 				case 'avatar_login':
@@ -169,6 +178,7 @@ export async function execute(event) {
 		.addFields(
 			{ name: "ID", value: `${server.guild_id}` },
 			{ name: "WebHook", value: `${server.watcher_hook}` },
+			{ name: "AdminHook", value: `${server.admin_hook}` },
 			{ name: "Mincraft IP", value: `${server.server_ip}` },
 			{ name: "Query Port", value: `${server.query_port}` },
 			{ name: "RCON Port", value: `${server.rcon_port}` },
