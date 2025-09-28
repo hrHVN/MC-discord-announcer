@@ -2,7 +2,7 @@
 *compose.yml
 
 src/json/*.json
-src/avatars/*
+src/avatars/*.png
 
 
 # Dependency directories
