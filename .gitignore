@@ -1,7 +1,7 @@
 # Misc
 *compose.yml
 
-src/json/*
+src/json/*.json
 src/avatars/*
 
 
