@@ -1,10 +1,7 @@
 # Intro
 This bot query's a minecraft server for basic stats, like version, MOTD, player limit and who is online, and sends a message to the discord server when someone enters or leaves the minecraft server. 
 
-The server have to enable "Query" in it's properties to be compatible with this bot.
-
-# Disclaimer
-This bot isn't really made for public use, and would not be usable as is by other Guilds or Minecraft servers. 
+The server have to enable "Query" in it's properties to be compatible with this bot. 
 
 # .ENV variables
 ```
