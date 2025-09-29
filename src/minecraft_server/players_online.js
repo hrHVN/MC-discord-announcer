@@ -20,8 +20,8 @@ export default function filter_players_online(query, server) {
 		
 		// reset Supsension counters
 		if (server_suspension_multiplier !== 1 || disabled_reset_timer !== null) {
-			disabled_reset_timer = null; 
-			server_suspension_multiplier = 1;
+			server.disabled_reset_timer = null; 
+			server.server_suspension_multiplier = 1;
 
 			// create message card
 			const embed = new EmbedBuilder()

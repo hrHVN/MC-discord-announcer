@@ -14,7 +14,8 @@ export const data = new SlashCommandBuilder()
 export async function execute(event) {
 	await event.deferReply();
 
-	const { guildId, user } = event;
+	const { guildId } = event;
+	
 	await onlinePlayers.updateServer(guildId,{ 
 		disable: "true",
 		disabled_reset_timer: "null",

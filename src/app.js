@@ -36,7 +36,7 @@ if(!once) {
 		Update Server profiles with new settings
 	*/
 	for(let server of onlinePlayers.data) {
-		if (!server?.falsePosetive && server.falsePosetive !== null){
+		if (!server?.falsePosetive && server.falsePosetive !== null) {
 
 			await onlinePlayers.updateServer(server.guild_id,{
 						disabled 						: "false",
@@ -116,3 +116,4 @@ async function loop(){
 }
 
 setInterval(async () => await loop(), 10000);
+

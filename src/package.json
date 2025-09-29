@@ -5,7 +5,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "test": "nodemon app.js",
+    "dev": "nodemon app.js",
+    "test": "node --test",
     "run": "node app.js",
     "git_all": "npm version patch --no-git-tag-version && git commit -a -m 'general update' && git push"
   },
@@ -17,6 +18,8 @@
     "mcquery": "^1.0.3"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "@sinonjs/fake-timers": "^15.0.0",
+    "nodemon": "^3.1.10",
+    "sinon": "^21.0.0"
   }
 }

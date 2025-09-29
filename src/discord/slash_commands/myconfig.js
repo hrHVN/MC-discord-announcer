@@ -3,11 +3,6 @@ import {
 	PermissionFlagsBits, InteractionContextType, AttachmentBuilder 
 } from 'discord.js';
 import onlinePlayers from '../../minecraft_server/OnlinePlayers.js'
-import { mojavatarOptions } from '../../utils/mojang_api.js';
-
-const avatarNames = mojavatarOptions.map(a => {
-	return { name: a.pose, value: a.pose };
-});
 
 export const data = new SlashCommandBuilder()
 		.setName('myconfig')
