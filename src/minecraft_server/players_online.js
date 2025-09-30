@@ -1,6 +1,6 @@
 import { playerOnline, playerOffline } from './player_activity_reporter.js'
 import onlinePlayers from './OnlinePlayers.js';
-import { WatcherWebhook } from '../discord/webhook.js';
+import { AdminWebhook } from '../discord/webhook.js';
 import { EmbedBuilder, AttachmentBuilder } from 'discord.js';
 
 /*
@@ -20,8 +20,15 @@ export default function filter_players_online(query, server) {
 		
 		// reset Supsension counters
 		if (server_suspension_multiplier !== 1 || disabled_reset_timer !== null) {
-			server.disabled_reset_timer = null; 
-			server.server_suspension_multiplier = 1;
+			await onlinePlayers.updateServer(guildId,{ 
+				disable: "false",
+				disabled_reset_timer: "null",
+				disabled_timer: "null",
+				falsePosetive: "null",
+				server_suspension_multiplier: 1,
+	 		});
+
+			let hook = admin_hook ? admin_hook : watcher_hook;
 
 			// create message card
 			const embed = new EmbedBuilder()
@@ -30,10 +37,10 @@ export default function filter_players_online(query, server) {
 				.setDescription(`The ${server_name} responded to my Query, so i have lifted the suspension. :slight_smile:`)
 				.setTimestamp();
 
-			AdminWebhook(admin_hook, { embeds: [embed] });
+			AdminWebhook(hook, { embeds: [embed] });
 		}
 		
-		// Login Palyers
+		// Login Players
 		player_.map(playerName => {
 			if(!online_players.includes(playerName)){
 				playerOnline(watcher_hook, online_players, mojavatar, playerName, server_name);
