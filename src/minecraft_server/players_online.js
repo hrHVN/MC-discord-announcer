@@ -7,7 +7,7 @@ import { EmbedBuilder, AttachmentBuilder } from 'discord.js';
 	Takes the minecraft query result and the guild-server object, to figure out who has come
 	online and who has left the server.
 */
-export default function filter_players_online(query, server) {
+export default async function filter_players_online(query, server) {
 	try {
 		const { player_, hostname } = query;
 		const {
