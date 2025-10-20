@@ -4,7 +4,8 @@ import path from 'node:path';
 
 const servers = path.join(
 	path.resolve('json'),
-	'registered_servers.json'
+	//'registered_servers.json'
+	'servers.json'
 	);
 
 //export const onlinePlayers = await loadJson(servers);
