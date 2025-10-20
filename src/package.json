@@ -15,7 +15,8 @@
   "dependencies": {
     "discord.js": "^14.22.1",
     "dotenv": "^16.4.7",
-    "mcquery": "^1.0.3"
+    "mcquery": "^1.0.3",
+    "ws": "^8.18.3"
   },
   "devDependencies": {
     "@sinonjs/fake-timers": "^15.0.0",

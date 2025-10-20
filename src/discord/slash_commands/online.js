@@ -12,7 +12,7 @@ export async function execute(event) {
 		const { guildId, user } = event;
 		
 		const online = new EmbedBuilder()
-		.setColor(0x0099FF)
+		.setColor('Gold')
 		.setTitle("These players are online");
 
 		const server = onlinePlayers.data.find(s => s.guild_id === guildId);

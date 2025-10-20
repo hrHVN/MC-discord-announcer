@@ -20,7 +20,7 @@ export default async function filter_players_online(query, server) {
 		
 		// reset Supsension counters
 		if (server_suspension_multiplier !== 1 || disabled_reset_timer !== null) {
-			await onlinePlayers.updateServer(guildId,{ 
+			await onlinePlayers.updateServer(guild_id,{ 
 				disable: "false",
 				disabled_reset_timer: "null",
 				disabled_timer: "null",

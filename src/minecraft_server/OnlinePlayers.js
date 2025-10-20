@@ -103,6 +103,12 @@ class OnlinePlayers {
 			}
 		};
 
+		// If the input is string value of null/false
+		if (disabled === "false") 			 _newJson.disabled = false;
+		if (falsePosetive === "null") 		 _newJson.falsePosetive = null;
+		if (disabled_timer === "null") 		 _newJson.disabled_timer = null;
+		if (disabled_reset_timer === "null") _newJson.disabled_reset_timer = null;
+
 		if (query_port){ 
 			_newJson.query_port				= query_port;
 			_newJson.disabled				= false;
