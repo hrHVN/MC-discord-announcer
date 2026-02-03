@@ -8,6 +8,7 @@ The server have to enable "Query" in it's properties to be compatible with this 
 DISCORD_TOKEN			= [BOT TOKEN]
 DISCORD_ID				= [BOT ID]
 DISCORD_PUB				= -- not used yet --
+DISCORD_UPDATE			= false  # used to trigger a slash-comand-update, only run once with true, then restart with false. 
 ```
 # Sources
 Sources used to build this bot.
@@ -20,11 +21,13 @@ Sources used to build this bot.
 
 [Discord.js Docs](https://discordjs.guide/creating-your-bot/)
 
-[Mojang API](https://minecraft.wiki/w/Mojang_API)
-
 [Isometric rendering](https://crafatar.com)
 
 [lunareclipse.studio](https://docs.lunareclipse.studio/)
+
+[Mojang API](https://minecraft.wiki/w/Mojang_API)
+
+[MC-WebSocket](https://minecraft.wiki/w/Minecraft_Server_Management_Protocol)
 
 ## Docker Debug comands
 

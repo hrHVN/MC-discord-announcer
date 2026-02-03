@@ -1,9 +1,11 @@
 # Misc
 *compose.yml
+*.db
+src/db/db_manager.sqbpro
 
 src/json/*.json
 src/avatars/*.png
-
+src/minecraft_server/management_server
 
 # Dependency directories
 *node_modules
