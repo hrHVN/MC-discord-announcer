@@ -1,9 +1,9 @@
 import commands from './slash_commands/index.js';
-import client  from './DiscordClient.js';
+import DiscordClient  from './DiscordClient.js';
 import { Events, Collection, MessageFlags } from "discord.js";
 
 // await commands;
-
+const client = DiscordClient.getInstance().getClient();
 // Load the commands
 client.commands = new Collection();
 
@@ -28,8 +28,6 @@ client.once(Events.ClientReady, async (readyClient) => {
 */
 client.on(Events.InteractionCreate, async (event) => {
 	if(!event.isChatInputCommand()) return;
-	
-	//console.log("Client_listener - client.on: ", event.options.getUser('target'));
 	const command = event.client.commands.get(event.commandName);
 	
 	if(!command) {

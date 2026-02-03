@@ -2,8 +2,9 @@ import {
 	SlashCommandBuilder, MessageFlags, EmbedBuilder,
 	PermissionFlagsBits, InteractionContextType, AttachmentBuilder 
 } from 'discord.js';
-import onlinePlayers from '../../minecraft_server/OnlinePlayers.js'
 import { mojavatarOptions } from '../../utils/mojang_api.js';
+import GuildManager from '../../db/managers/GuildManager.js';
+const guildManager = GuildManager.getInstance();
 
 const avatarNames = mojavatarOptions.map(a => {
 	return { name: a.pose, value: a.pose };
@@ -79,96 +80,51 @@ export async function execute(event) {
 	await event.deferReply();
 
 	const { guildId, user } = event;
-	const newValues = {};
-	const oldServer = onlinePlayers.data.find(d => {
-		if(d.guild_id == guildId) return d;
-	});
+	const guildDto = await guildManager.getGuildById(guildId);
 
 	[
 		'adminhook','webhook','server_ip','query_port','rcon_port','rcon_password',
 		'avatar_login','avatar_login_crop','avatar_logout','avatar_logout_crop'
-	].forEach(option => {
-		let name;
-		
+	].forEach(option => {		
 		const response = event.options.getString(option);
+
 		if (response) {
+			let mojavatar;
 			switch(option)
 			{
-				case 'server_ip':
-				case 'query_port':
-				case 'rcon_port':
-					newValues[option] = response;
+				case 'server_ip': 		guildDto.setServerIp(response);		break;
+				case 'query_port': 		guildDto.setQueryPort(response);	break;
+				case 'rcon_port': 		guildDto.setRconPort(response);		break;
+				case 'rcon_password': 	guildDto.setRconPwd(response);		break;
+				case 'webhook': 		guildDto.setWatcherHook(response);	break;
+				case 'adminhook': 		guildDto.setAdminHook(response);	break;
+				case 'avatar_login': 
+					mojavatar = guildDto.getMojavatar();	
+					mojavatar.login.pose = response;
+					guildDto.setMojavatar(mojavatar);	
 					break;
-
-				case 'rcon_password':
-					newValues['rcon_pwd'] = response;
-					break;
-
-				case 'webhook':
-					newValues["watcher_hook"] = response;
-					break;
-
-				case 'adminhook':
-					newValues["admin_hook"] = response;
-					break;
-
-				case 'avatar_login':
-					if(!newValues?.mojavatar?.login ) { 
-						if(!newValues.mojavatar) newValues.mojavatar = {};
-
-						newValues['mojavatar']["login"] = { 
-								pose: response, 
-								crop: oldServer.mojavatar.login.crop
-							}
-					}
-					else newValues['mojavatar'].login.pose = response;
-					break;
-
 				case 'avatar_login_crop':
-					if(!newValues?.mojavatar?.login ) { 
-						if(!newValues.mojavatar) newValues.mojavatar = {};
-
-						newValues['mojavatar']["login"] = { 
-								pose: oldServer.mojavatar.login.pose, 
-								crop:response
-							}
-						}
-					else newValues['mojavatar'].login.crop = response;
-
+					mojavatar = guildDto.getMojavatar(); 	
+					mojavatar.login.crop = response; 
+					guildDto.setMojavatar(mojavatar);		
 					break;
-
 				case 'avatar_logout':
-					if(!newValues?.mojavatar?.logout ) { 
-						if(!newValues.mojavatar) newValues.mojavatar = {};
-
-						newValues['mojavatar']["logout"] = { 
-								pose: response, 
-								crop: oldServer.mojavatar.logout.crop
-							}
-						}
-					else newValues['mojavatar'].logout.pose = response;
+					mojavatar = guildDto.getMojavatar(); 		
+					mojavatar.logout.pose = response; 	
+					guildDto.setMojavatar(mojavatar);	
+					break;
+				case 'avatar_logout_crop': 	
+					mojavatar = guildDto.getMojavatar();
+					mojavatar.logout.crop = response;	
+					guildDto.setMojavatar(mojavatar);	
 					break;
 
-				case 'avatar_logout_crop':
-					if(!newValues?.mojavatar?.logout ) { 
-						if(!newValues.mojavatar) newValues.mojavatar = {};
-
-						newValues['mojavatar']["logout"] = { 
-								pose: oldServer.mojavatar.logout.pose, 
-								crop: response
-							}
-						}
-					else newValues['mojavatar'].logout.crop = response
-					break;
+				default: break;
 			}
 		}
 	});
 
-	await onlinePlayers.updateServer(guildId, newValues);
-
-	const server = onlinePlayers.data.find(d => {
-		if(d.guild_id == guildId) return d;
-	});
+	await guildManager.save(guildDto);
 
 	const file = new AttachmentBuilder('./Hive_ng_Fun-bee.png');
 	const embed = new EmbedBuilder()
@@ -176,17 +132,14 @@ export async function execute(event) {
 		.setThumbnail('attachment://Hive_ng_Fun-bee.png')
 		.setTitle('Guild Config')
 		.addFields(
-			{ name: "ID", value: `${server.guild_id}` },
-			{ name: "WebHook", value: `${server.watcher_hook}` },
-			{ name: "AdminHook", value: `${server.admin_hook}` },
-			{ name: "Mincraft IP", value: `${server.server_ip}` },
-			{ name: "Query Port", value: `${server.query_port}` },
-			{ name: "RCON Port", value: `${server.rcon_port}` },
-			{ name: "RCON Password", value: `${server.rcon_pwd}` },
-			{ name: "Avatar's", value: `
-Login: **${server.mojavatar.login.pose}**/ ${server.mojavatar.login.crop} 
-Logout: **${server.mojavatar.logout.pose}**/ ${server.mojavatar.logout.crop}
-		`}
+			{ name: "ID", value: `${guildDto.getGuildId()}` },
+			{ name: "AdminHook", value: `${guildDto.getAdminHook()}` },
+			{ name: "WebHook", value: `${guildDto.getWatcherHook()}` },
+			{ name: "Mincraft IP", value: `${guildDto.getServerIp()}` },
+			{ name: "Query Port", value: `${guildDto.getQueryPort()}` },
+			{ name: "RCON Port", value: `${guildDto.getRconPort()}` },
+			{ name: "RCON Password", value: `${guildDto.getRconPwd()}` },
+			{ name: "Avatar's", value: `Login: **${guildDto.getMojavatar().login.pose}** \nLogout: **${guildDto.getMojavatar().logout.pose}**`}
 		);
 
 	await event.followUp({

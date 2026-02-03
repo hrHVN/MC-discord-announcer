@@ -2,7 +2,8 @@ import {
 	AttachmentBuilder, SlashCommandBuilder, EmbedBuilder,
 	PermissionFlagsBits, InteractionContextType 
 } from 'discord.js';
-import onlinePlayers from '../../minecraft_server/OnlinePlayers.js'
+import GuildManager from '../../db/managers/GuildManager.js';
+const guildManager = GuildManager.getInstance();
 
 export const data = new SlashCommandBuilder()
 		.setName('enable')
@@ -15,23 +16,21 @@ export async function execute(event) {
 	await event.deferReply();
 
 	const { guildId } = event;
-	// reset all the timeout variables
-	await onlinePlayers.updateServer(guildId,{ 
-		disable: "false",
-		disabled_reset_timer: "null",
-		disabled_timer: "null",
-		falsePosetive: "null",
-		server_suspension_multiplier: 1,
-	 });
+	const guildDto = await guildManager.getGuildById(guildId);
 
-	const server = onlinePlayers.data.find(d => d.guild_id == guildId);
+	guildDto.setDisabled(false);
+	guildDto.setDisabledTimer(null);
+	guildDto.setDisabledResetTimer(null);
+	guildDto.setFalsePosetive(false);
+
+	await guildManager.save(guildDto);
 
 	const file = new AttachmentBuilder('./Hive_ng_Fun-bee.png');
 	const embed = new EmbedBuilder()
 		.setColor("Gold")
 		.setThumbnail('attachment://Hive_ng_Fun-bee.png')
 		.setTitle('Reenabled the Guild')
-		.setDescription(`The ${ server.server_name ? server.server_name : server.server_ip } has been added to the Query Loop again!`);
+		.setDescription(`The ${ guildDto.getGuildName() ? guildDto.getGuildName() : guildDto.getServerIp() } has been added to the Query Loop again!`);
 
 	await event.followUp({
 			ephemeral: true,

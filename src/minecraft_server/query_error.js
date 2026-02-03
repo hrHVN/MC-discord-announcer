@@ -21,9 +21,14 @@ function avoid_false_posetive(tsA, tsB) {
 }
 
 export default async function query_error(error, server) {
+	console.log("-- DEBUG -- query_error", error);
+	return;
+
+	/*
 	const { disabled, admin_hook, watcher_hook, falsePosetive, server_name,
 		disabled_reset_timer, server_ip, server_suspension_multiplier
 		} = server;
+
 
 	const now = Date.now()
 	const not_false = avoid_false_posetive(now, falsePosetive);
@@ -72,4 +77,5 @@ export default async function query_error(error, server) {
 		console.error(`[ERROR] - query_error - possible false posetive in querying ${error}:\n`, error);
 		server.falsePosetive = now;
 	}
+	*/
 }

@@ -16,13 +16,13 @@ export function MinecraftQuery(SERVER_URL, SERVER_PORT, cb, cb_err) {
 			if (err) {
     			console.error(err);
   			}
-	
+			
   			cb(stat);
   			shouldWeClose();
 		});
 	})
 	.catch(err => {
-		console.error("[ERROR] MinecraftQuery - error connecting %s", SERVER_URL, err);
+    	console.error('[ERROR] Connection %s', err.message);
 		cb_err(SERVER_URL);
 	});
 }

@@ -1,4 +1,4 @@
-import { WebhookClient, EmbedBuilder } from 'discord.js'
+import { WebhookClient } from 'discord.js'
 
 /*
 	Use this hook to send status messages to the guild administrators

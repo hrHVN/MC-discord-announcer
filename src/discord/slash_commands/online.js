@@ -1,6 +1,8 @@
 import { SlashCommandBuilder, MessageFlags, EmbedBuilder } from 'discord.js';
-import onlinePlayers from '../../minecraft_server/OnlinePlayers.js';
 import { mojang_get_uuid, get_avatar_head } from '../../utils/mojang_api.js';
+import GuildMembersManager from '../../db/managers/GuildMembersManager.js';
+
+const guildMembersManager = GuildMembersManager.getInstance();
 
 export const data = new SlashCommandBuilder()
 		.setName('online')
@@ -11,23 +13,25 @@ export async function execute(event) {
 		await event.deferReply();			// Send a "wait" message to Discord api
 		const { guildId, user } = event;
 		
-		const online = new EmbedBuilder()
+		const message = new EmbedBuilder()
 		.setColor('Gold')
 		.setTitle("These players are online");
 
-		const server = onlinePlayers.data.find(s => s.guild_id === guildId);
-			
+		const guildMemberDto = (await guildMembersManager.getAllGuildMembers(guildId))
+			.filter(user => user.getOnline());		
 
-		for (const player of server.online_players) {
-			online.addFields({ name: player })
+		for (const memberDto of guildMemberDto) {
+			message.addFields({ name: memberDto.getUserName(), value:"" })
 		}
 
-		if (server.online_players.length < 1) online.setDescription("Currently **no one** is online..");
-		else online.setTitle("These players are online");
+		if (guildMemberDto.length < 1) message.setDescription("Currently **no one** is online..");
+		else {
+			message.setTitle("These players are online");
+		}
 			
 		await event.followUp({
 			ephemeral: true,
-			embeds: [online]
+			embeds: [message]
 		});
 	}
 

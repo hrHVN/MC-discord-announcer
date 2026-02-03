@@ -2,7 +2,9 @@ import {
 	SlashCommandBuilder, MessageFlags, EmbedBuilder,
 	PermissionFlagsBits, InteractionContextType, AttachmentBuilder
 } from 'discord.js';
-import onlinePlayers from '../../minecraft_server/OnlinePlayers.js'
+import GuildManager from '../../db/managers/GuildManager.js';
+import GuildDao from  '../../db/dao/GuildDao.js';
+const guildManager = GuildManager.getInstance();
 
 export const data = new SlashCommandBuilder()
 		.setName('init')
@@ -32,18 +34,23 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(event) {
 	await event.deferReply();
-
 	const { guildId, user } = event;
-	let adminHook = event.options?.getString('adminhook');
+	const newServer = new GuildDao({
+		guild_id: guildId,
+		guild_name: "",
+		admin_hook: event.options.getString('adminhook') ?? event.options.getString('webhook'),
+		watcher_hook: event.options.getString('webhook'),
+		server_ip: event.options.getString('server_ip'),
+		query_port: parseInt(event.options.getString('query_port')),
+		rcon_port: null,
+		rcon_pwd: null,
+		disabled: false,
+		false_posetive: false,
+		disabled_timer: null,
+		disabled_reset_timer: null,
+	});
 
-	await onlinePlayers.addServer(guildId,
-		adminHook || event.options.getString('webhook'),
-		event.options.getString('webhook') ,
-		event.options.getString('server_ip'),
-		event.options.getString('query_port')
-		);
-
-	const server = onlinePlayers.data.find(d => d.guild_id == guildId);
+	await guildManager.save(newServer);
 
 	const file = new AttachmentBuilder('./Hive_ng_Fun-bee.png');
 	const embed = new EmbedBuilder()
@@ -51,13 +58,13 @@ export async function execute(event) {
 		.setThumbnail('attachment://Hive_ng_Fun-bee.png')
 		.setTitle('Guild Config')
 		.addFields(
-			{ name: "ID", value: `${server.guild_id}` },
-			{ name: "WebHook", value: `${server.watcher_hook}` },
-			{ name: "Mincraft IP", value: `${server.server_ip}` },
-			{ name: "Query Port", value: `${server.query_port}` },
-			{ name: "RCON Port", value: `${server.rcon_port}` },
-			{ name: "RCON Password", value: `${server.rcon_pwd}` },
-			{ name: "Avatar's", value: `Login: **${server.mojavatar.login.pose}** \nLogout: **${server.mojavatar.logout.pose}**`}
+			{ name: "ID", value: `${newServer.getGuildId()}` },
+			{ name: "WebHook", value: `${newServer.getWatcherHook()}` },
+			{ name: "Mincraft IP", value: `${newServer.getServerIp()}` },
+			{ name: "Query Port", value: `${newServer.getQueryPort()}` },
+			{ name: "RCON Port", value: `${newServer.getRconPort()}` },
+			{ name: "RCON Password", value: `${newServer.getRconPwd()}` },
+			{ name: "Avatar's", value: `Login: **${newServer.getMojavatar().login.pose}** \nLogout: **${newServer.getMojavatar().logout.pose}**`}
 		);
 
 	await event.followUp({
