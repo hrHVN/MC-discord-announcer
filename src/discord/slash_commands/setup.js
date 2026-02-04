@@ -93,8 +93,8 @@ export async function execute(event) {
 			switch(option)
 			{
 				case 'server_ip': 		guildDto.setServerIp(response);		break;
-				case 'query_port': 		guildDto.setQueryPort(response);	break;
-				case 'rcon_port': 		guildDto.setRconPort(response);		break;
+				case 'query_port': 		guildDto.setQueryPort(parseInt(response));	break;
+				case 'rcon_port': 		guildDto.setRconPort(parseInt(response));	break;
 				case 'rcon_password': 	guildDto.setRconPwd(response);		break;
 				case 'webhook': 		guildDto.setWatcherHook(response);	break;
 				case 'adminhook': 		guildDto.setAdminHook(response);	break;

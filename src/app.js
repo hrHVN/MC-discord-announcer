@@ -71,6 +71,7 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 (async () => {
+	console.info("[INFO] - Starting loop ..");
 	try {
 		while(!shuttingDown){
 			const guilds = (await guildManager.getAllGuilds())

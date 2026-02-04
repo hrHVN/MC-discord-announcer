@@ -22,7 +22,7 @@ export function MinecraftQuery(SERVER_URL, SERVER_PORT, cb, cb_err) {
 		});
 	})
 	.catch(err => {
-    	console.error('[ERROR] Connection %s', err.message);
+    	console.error('[ERROR] - MinecraftQuery - connection %s', err.message);
 		cb_err(SERVER_URL);
 	});
 }
