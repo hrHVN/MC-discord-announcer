@@ -22,7 +22,7 @@ export default async function filter_players_online(query, guildDao) {
 		}
 
 		guildManager.save(guildDao)
-
+		console.log("---DEBUG--- filter_players_online: ", player_);
 		for (let memberDao of guildMembers){
 			let online = memberDao.getOnline(),
 				userName = memberDao.getUserName(),
@@ -47,13 +47,15 @@ export default async function filter_players_online(query, guildDao) {
 					userName);
 				guildMembersManager.save(memberDao);
 			}
-			else {
+			else if(player_.includes(userName)) {
 				// player is still online, remove from the list
 				player_.splice(index, 1);
 			}
+			//console.log("---DEBUG--- filter_players_online( forLoop ): ", userName);
 		}
 
 		if (player_.length < 1) return;
+		console.log("---DEBUG--- filter_players_online( newPlayer ): ", player_);
 		for (let newPlayer of player_) {
 			guildMembersManager.save(new GuildMemberDao({
 				guild_id: guildDao.getGuildId(),
