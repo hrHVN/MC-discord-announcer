@@ -19,7 +19,6 @@ export default class DatabaseManager {
         		if (err) console.error('[DatabaseManager] DB open error:', err);
       		},
   			{ bigint: true });
-		console.log(path.resolve('db/sqlite', 'database.db'))
 	}
 
 	static getInstance() {

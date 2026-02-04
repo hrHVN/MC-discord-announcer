@@ -26,7 +26,12 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 		Initializations
 */
 const databaseManager = DatabaseManager.getInstance();
-await databaseManager.initialiseDatabase();
+try {
+	await databaseManager.initialiseDatabase();
+} catch(e) {
+	console.error("ERROR - initialiseDatabase %s", e.message, e);
+	process.exit(1);
+}
 
 const guildManager = GuildManager.getInstance();
 const guildMembersManager = GuildMembersManager.getInstance();
@@ -78,12 +83,12 @@ process.on('unhandledRejection', (reason, promise) => {
 				.filter(g => !g.getDisabled());
 			const serverQuerys = [];
 			for (let guildDao of guilds) {
-				// Validate server quarantine
+				// todo: Validate server quarantine
 				if (false) {
-					guildDao.disabled
-					guildDao.falsePosetive
-					guildDao.disabledTimer
-					guildDao.disabledResetTimer
+					guildDao.setDisabled();
+					guildDao.setFalsePosetive();
+					guildDao.setDisabledTimer();
+					guildDao.setDisabledResetTimer();
 				}
 				serverQuerys.push(
 					MinecraftQuery(

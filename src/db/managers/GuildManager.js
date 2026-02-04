@@ -53,26 +53,44 @@ export default class GuildManager extends DatabaseManager {
 			disabled_timer 			= excluded.disabled_timer,
 			disabled_reset_timer 	= excluded.disabled_reset_timer
 	    `.trim();
-	
-	    await this.query(sql, values);
+		try {
+			    await this.query(sql, values);
+		}
+		catch (e) {
+			console.error("[ERROR] - GuildManager.save(): %s - ", e.message, e);
+		}
 	}
 
 	async getAllGuilds() {
-		const rows = await this.query("SELECT * FROM guilds", []);
-		if (!rows) return [];
-
-		return rows.map(row => { return new GuildDao(row); });
+		try {
+			const rows = await this.query("SELECT * FROM guilds", []);
+			if (!rows) return [];
+			return rows.map(row => { return new GuildDao(row); });
+		}
+		catch (e) {
+			console.error("[ERROR] - GuildManager.getAllGuilds(): %s - ", e.message, e);
+		}
 	}
 
 	async getGuildById(guildId) {
-		const rows = await this.query("SELECT * FROM guilds WHERE guild_id = ?", [guildId]);
-		
-		return rows[0] 
-		? new GuildDao(rows[0])
-		: null;
+		try {
+			const rows = await this.query("SELECT * FROM guilds WHERE guild_id = ?", [guildId]);
+			
+			return rows[0] 
+			? new GuildDao(rows[0])
+			: null;
+		}
+		catch (e) {
+			console.error("[ERROR] - GuildManager.getGuildById(): %s - ", e.message, e);
+		}
 	}
 
 	async delete(guildId){
-		return await this.query("DELETE FROM guilds WHERE guild_id = ?", [guildId]);
+		try {
+			return await this.query("DELETE FROM guilds WHERE guild_id = ?", [guildId]);
+		}
+		catch (e) {
+			console.error("[ERROR] - GuildManager.delete(): %s - ", e.message, e);
+		}
 	}
 }
