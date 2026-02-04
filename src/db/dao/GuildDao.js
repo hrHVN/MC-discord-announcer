@@ -84,7 +84,7 @@ export default class GuildDao {
     if (value !== null && (!Number.isInteger(value) || value < 0)) {
       throw new TypeError('query_port must be a non‑negative integer or null');
     }
-    this._queryPort = value;
+    this._queryPort = parseInt(value);
   }
 
   getRconPort() {
@@ -94,7 +94,7 @@ export default class GuildDao {
     if (value !== null && (!Number.isInteger(value) || value < 0)) {
       throw new TypeError('rcon_port must be a non‑negative integer or null');
     }
-    this._rconPort = value;
+    this._rconPort = parseInt(value);
   }
 
   getRconPwd() {

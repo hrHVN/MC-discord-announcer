@@ -87,9 +87,10 @@ export async function execute(event) {
 		'avatar_login','avatar_login_crop','avatar_logout','avatar_logout_crop'
 	].forEach(option => {		
 		const response = event.options.getString(option);
+		let mojavatar;
+		console.log(response, typeof response)
 
 		if (response) {
-			let mojavatar;
 			switch(option)
 			{
 				case 'server_ip': 		guildDto.setServerIp(response);		break;
