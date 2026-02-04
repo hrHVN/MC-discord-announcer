@@ -14,15 +14,8 @@ services:
       # If you add new slash-commands, run the container once with "DISCORD_UPDATE" set to true
       DISCORD_UPDATE: false 
     volumes:
-      - type: volume
-        source: discordbot
-        target: /app/db/sqlite
-        volume_subpath: database
-
-      - type: volume
-        source: discordbot
-        target: /app/avatars
-        volume_subpath: avatars
+      - discordbot:/app/db/sqlite:rw,volume_subpath=database
+      - discordbot:/app/avatars:rw,volume_subpath=avatars
 
 volumes:
   discordbot:
