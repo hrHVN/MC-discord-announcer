@@ -1,0 +1,28 @@
+version: '3'
+services:
+  discordBot:
+    image: cyberhrhvn/vartkjokken:discord-bot
+    restart: unless-stopped
+    command: node app.js
+    ports:
+      - 3000:80
+    environment:
+      NODE_ENV: production
+      DISCORD_TOKEN: # your bot token
+      DISCORD_ID: # Your bot id
+      DISCORD_PUB_KEY: null # Currently unsused
+      # If you add new slash-commands, run the container once with "DISCORD_UPDATE" set to true
+      DISCORD_UPDATE: false 
+    volumes:
+      - type: volume
+        source: discordbot
+        target: /app/db/sqlite
+        volume_subpath: database
+
+      - type: volume
+        source: discordbot
+        target: /app/avatars
+        volume_subpath: avatars
+
+volumes:
+  discordbot:

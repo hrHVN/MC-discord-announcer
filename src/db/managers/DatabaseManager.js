@@ -13,13 +13,13 @@ export default class DatabaseManager {
 	
 	constructor() {
 		this.db = new sqlite.Database(
-			path.resolve('db', 'database.db'),
+			path.resolve('db/sqlite', 'database.db'),
 			sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
 			err => {
         		if (err) console.error('[DatabaseManager] DB open error:', err);
       		},
-  			{ bigint: true } 
-    	);
+  			{ bigint: true });
+		console.log(path.resolve('db/sqlite', 'database.db'))
 	}
 
 	static getInstance() {
