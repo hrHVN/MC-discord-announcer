@@ -20,7 +20,6 @@ export default async function filter_players_online(query, guildDao) {
 		if (guildDao.getGuildName() == "") {
 			guildDao.setGuildName(hostname);
 		}
-		
 		/*
 		// reset Supsension counters
 		if (server_suspension_multiplier !== 1 || disabled_reset_timer !== null) {
@@ -87,7 +86,8 @@ export default async function filter_players_online(query, guildDao) {
 			}
 			guildMembersManager.save(memberDao);
 		}
-		if (player_.length > 1) return;
+
+		if (player_.length < 1) return;
 		for (let newPlayer of player_) {
 			guildMembersManager.save(new GuildMemberDao({
 				guild_id: guildDao.getGuildId(),

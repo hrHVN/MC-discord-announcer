@@ -97,8 +97,7 @@ process.on('unhandledRejection', (reason, promise) => {
 
 			await Promise.all(serverQuerys);
 			await new Promise(resolve => setTimeout(resolve, 8_000));
-		}
-		
+		}		
 	}
 	catch (error) {
 		console.error("ERROR --- Unhinged Error --- \n", error);

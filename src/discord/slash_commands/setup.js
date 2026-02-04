@@ -88,7 +88,6 @@ export async function execute(event) {
 	].forEach(option => {		
 		const response = event.options.getString(option);
 		let mojavatar;
-		console.log(response, typeof response)
 
 		if (response) {
 			switch(option)

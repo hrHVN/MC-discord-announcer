@@ -16,7 +16,7 @@ export function MinecraftQuery(SERVER_URL, SERVER_PORT, cb, cb_err) {
 			if (err) {
     			console.error(err);
   			}
-			
+			//console.log("--- DEBUG --- MinecraftQuery: %s", stat.sessionId,stat.hostname, SERVER_URL, SERVER_PORT);
   			cb(stat);
   			shouldWeClose();
 		});
