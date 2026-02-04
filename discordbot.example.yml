@@ -1,9 +1,28 @@
-version: '3'
+version: 3.9
+
 services:
+  init-volume:
+    image: busybox
+    command: >
+      sh -c "
+        mkdir -p /data/database &&
+        mkdir -p /data/avatars &&
+        chown -R 1000:1000 /data
+      "
+    volumes:
+      - discordbot:/data
+    restart: "no"
+    depends_on: [] 
+
   discordBot:
+    depends_on:
+      init-volume:
+        condition: service_completed_successfully
+
     image: cyberhrhvn/vartkjokken:discord-bot
     restart: unless-stopped
     command: node app.js
+    container_name: discordbot
     ports:
       - 3000:80
     environment:
@@ -14,8 +33,10 @@ services:
       # If you add new slash-commands, run the container once with "DISCORD_UPDATE" set to true
       DISCORD_UPDATE: false 
     volumes:
-      - discordbot:/app/db/sqlite:rw,volume_subpath=database
-      - discordbot:/app/avatars:rw,volume_subpath=avatars
+      - discordbot:/app/db/sqlite:rw,volume_subpath=data/database
+      - discordbot:/app/avatars:rw,volume_subpath=data/avatars
 
 volumes:
   discordbot:
+    name: discordbot
+    
