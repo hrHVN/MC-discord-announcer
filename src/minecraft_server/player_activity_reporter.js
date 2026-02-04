@@ -8,8 +8,10 @@ export async function playerOnline(hook, mojavatar, player) {
 	const { id, name } = await mojang_get_uuid(player);
 	const { avatar_path, avatar_file } = await lunareclipse(name, mojavatar.login.pose, mojavatar.login.crop);
 	const file = new AttachmentBuilder(avatar_path);
+	
+	console.log("--- DEBUG --- playerOnline - ", player)
+	//return;
 
-	// create message card
 	const embed = new EmbedBuilder()
 		.setColor("Gold")
 		.setTitle(`Look!`)
@@ -30,6 +32,9 @@ export async function playerOffline(hook,mojavatar, player) {
 	const { id, name } = await mojang_get_uuid(player);
 	const { avatar_path, avatar_file } = await lunareclipse(name, mojavatar.logout.pose, mojavatar.logout.crop);
 	const file = new AttachmentBuilder(avatar_path);
+	
+	console.log("--- DEBUG --- playerOffline - ", player)
+	//return;
 
 	const embed = new EmbedBuilder()
 		.setColor("Orange")

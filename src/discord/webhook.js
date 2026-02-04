@@ -9,10 +9,6 @@ export async function AdminWebhook(hook, message) {
 		/*
 			Too stop server spaming during testing.
 		*/
-		hook = process.env.NODE_ENV !== "production" 
-			? process.env.DEV_HOOK 
-			: hook;
-
 		try {
 			message.username = "[BOT] Admin Hook";
 			await client.send(message);
@@ -30,9 +26,6 @@ export async function AdminWebhook(hook, message) {
 */
 export async function WatcherWebhook(hook, message) {
 	return new Promise(async (resolve, reject) => {
-		hook = process.env.NODE_ENV !== "production" 
-			? process.env.DEV_HOOK 
-			: hook;
 		const client = new WebhookClient({ url: hook });
 		/*
 			Too stop server spaming during testing.

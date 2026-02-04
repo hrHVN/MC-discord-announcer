@@ -1,4 +1,4 @@
-import { createWriteStream } from 'node:fs';
+import { createWriteStream, existsSync } from 'node:fs';
 import { pipeline } from 'node:stream/promises';
 import path from 'node:path';
 
@@ -159,8 +159,16 @@ export const mojavatarOptions = [
 	//{ pose: "head", crops: [ "full" ]	},
 ]
 export async function lunareclipse(player, pose = "mojavatar", crop = "full") {
-	const filePath = path.join(path.resolve('avatars'), `${player}.png`); 
 	try {
+		let fileName = `${player}_${pose}_${crop}.png`
+		const filePath = path.join(path.resolve('avatars'), fileName);
+		
+		if (existsSync(filePath)){
+			console.log("---DEBUG--- lunareclipse( iExist ): ", filePath)
+			return { avatar_path: filePath, avatar_file: fileName };
+		}
+		console.log("---DEBUG--- lunareclipse: ", filePath)
+		
 		const avatar = mojavatarOptions.find(a => {
 			if (a.pose == pose) return a;
 		});
@@ -176,14 +184,13 @@ export async function lunareclipse(player, pose = "mojavatar", crop = "full") {
 				avatar_file: `Notch.png` 
 			};
 		}
-
 		const bodyStream = response.body;
 
     	// Pipe the stream directly into a file
     	const fileStream = createWriteStream(filePath);
     	await pipeline(bodyStream, fileStream);
     	
-		return { avatar_path: filePath, avatar_file: `${player}.png` };
+		return { avatar_path: filePath, avatar_file: fileName };
 	}
 	catch(error){
 		console.error("[ERROR] lunareclipse - ", error);

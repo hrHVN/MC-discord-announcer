@@ -1,5 +1,3 @@
-version: 3.9
-
 services:
   init-volume:
     image: busybox
@@ -33,10 +31,11 @@ services:
       # If you add new slash-commands, run the container once with "DISCORD_UPDATE" set to true
       DISCORD_UPDATE: false 
     volumes:
-      - discordbot:/app/db/sqlite:rw,volume_subpath=data/database
-      - discordbot:/app/avatars:rw,volume_subpath=data/avatars
+      - discordbot-db:/app/db/sqlite
+      - discordbot-avatars:/app/avatars
 
 volumes:
-  discordbot:
-    name: discordbot
-    
+  discordbot-db:
+    name: discordbot-db
+  discordbot-avatars:
+    name: discordbot-avatars
