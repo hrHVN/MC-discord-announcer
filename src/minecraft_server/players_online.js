@@ -20,41 +20,7 @@ export default async function filter_players_online(query, guildDao) {
 		if (guildDao.getGuildName() == "") {
 			guildDao.setGuildName(hostname);
 		}
-		/*
-		// reset Supsension counters
-		if (server_suspension_multiplier !== 1 || disabled_reset_timer !== null) {
-			await onlinePlayers.updateServer(guild_id,{ 
-				disable: "false",
-				disabled_reset_timer: "null",
-				disabled_timer: "null",
-				falsePosetive: "null",
-				server_suspension_multiplier: 1,
-	 		});
 
-			let hook = admin_hook ? admin_hook : watcher_hook;
-
-			// create message card
-			const embed = new EmbedBuilder()
-				.setColor("Yellow")
-				.setTitle(`Suspension lifted!`)
-				.setDescription(`The ${server_name} responded to my Query, so i have lifted the suspension. :slight_smile:`)
-				.setTimestamp();
-
-			AdminWebhook(hook, { embeds: [embed] });
-		}		
-		// Login Players
-		player_.map(playerName => {
-			if(!online_players.includes(playerName)){
-				playerOnline(watcher_hook, online_players, mojavatar, playerName, server_name);
-			}
-		});	
-		// if online_players[x] not in player_ send logout event
-		online_players.map(playerName => {
-			if(!player_.includes(playerName)){
-				playerOffline(watcher_hook, online_players, mojavatar, playerName, server_name);
-			}
-		});
-*/
 		guildManager.save(guildDao)
 
 		for (let memberDao of guildMembers){
@@ -62,7 +28,7 @@ export default async function filter_players_online(query, guildDao) {
 				userName = memberDao.getUserName(),
 				index = player_.indexOf(userName);
 
-			if (!online && player_.includes(userName)){
+			if (!online && player_.includes(userName)) {
 				memberDao.setOnline(1);
 				memberDao.setLastSeen(null);
 				player_.splice(index, 1);
@@ -70,21 +36,21 @@ export default async function filter_players_online(query, guildDao) {
 					guildDao.getWatcherHook(),
 					guildDao.getMojavatar(),
 					userName);
-
-			} else if (online && !player_.includes(userName)){
+				guildMembersManager.save(memberDao);
+			} 
+			else if (online && !player_.includes(userName)){
 				memberDao.setOnline(0);
 				memberDao.setLastSeen(null);
 				playerOffline(
 					guildDao.getWatcherHook(),
 					guildDao.getMojavatar(), 
 					userName);
-
+				guildMembersManager.save(memberDao);
 			}
 			else {
 				// player is still online, remove from the list
 				player_.splice(index, 1);
 			}
-			guildMembersManager.save(memberDao);
 		}
 
 		if (player_.length < 1) return;

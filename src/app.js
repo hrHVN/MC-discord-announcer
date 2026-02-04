@@ -3,8 +3,9 @@ import path from 'node:path';
 import { dirname } from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-
+import Sleep from './utils/Sleep.js'
 // Databse
+import InitialiseDatabase from './db/InitialiseDatabase.js';
 import DatabaseManager from './db/managers/DatabaseManager.js';
 import GuildManager from './db/managers/GuildManager.js';
 import GuildMembersManager from './db/managers/GuildMembersManager.js';
@@ -25,14 +26,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 /*
 		Initializations
 */
-const databaseManager = DatabaseManager.getInstance();
-try {
-	await databaseManager.initialiseDatabase();
+/*try {
+	await InitialiseDatabase();
 } catch(e) {
 	console.error("ERROR - initialiseDatabase %s", e.message, e);
 	process.exit(1);
-}
-
+}*/
+const databaseManager = DatabaseManager.getInstance();
 const guildManager = GuildManager.getInstance();
 const guildMembersManager = GuildMembersManager.getInstance();
 
@@ -101,7 +101,8 @@ process.on('unhandledRejection', (reason, promise) => {
 			}
 
 			await Promise.all(serverQuerys);
-			await new Promise(resolve => setTimeout(resolve, 8_000));
+			//await new Promise(resolve => setTimeout(resolve, 8_000));
+			await Sleep(8_000);
 		}		
 	}
 	catch (error) {
