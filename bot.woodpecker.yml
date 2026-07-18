@@ -1,0 +1,25 @@
+when:
+  - branch: main
+    path:
+      - src/**
+      - '!*/test/**'
+
+pipeline:
+  build:
+    image: docker
+    privileged: true
+    environment:
+      DOCKER_USERNAME:
+        from_secret: DOCKER_USERNAME
+      DOCKER_PWD:
+        from_secret: DOCKER_PWD
+      TAG_NAME: discord-bot
+      DOCKER_REPOSITORY:
+        from_secret: DOCKER_REPOSITORY
+    commands:
+      - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PWD"
+      - docker build -t "$DOCKER_USERNAME/$DOCKER_REPOSITORY:$TAG_NAME" . -f ./Dockerfile
+      - docker push "$DOCKER_USERNAME/$DOCKER_REPOSITORY:$TAG_NAME"
+    when:
+      event: push
+      branch: main

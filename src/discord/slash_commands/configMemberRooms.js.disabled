@@ -1,0 +1,36 @@
+import {
+	AttachmentBuilder, SlashCommandBuilder, EmbedBuilder,
+	PermissionFlagsBits, InteractionContextType 
+} from 'discord.js';
+import GuildManager from '../../db/managers/GuildManager.js';
+const guildManager = GuildManager.getInstance();
+
+export const data = new SlashCommandBuilder()
+		.setName('configureMemberRooms')
+		.setDescription(`Configure which user groups users can join voluntarily.`)	
+		.setContexts(InteractionContextType.Guild)
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+		.setNSFW(false);
+
+export async function execute(event) {
+	await event.deferReply({ ephemeral: true });
+
+	const { guildId } = event;
+	const guildDto = await guildManager.getGuildById(guildId);
+
+	await guildManager.save(guildDto);
+
+	const file = new AttachmentBuilder('./Hive_ng_Fun-bee.png');
+	const embed = new EmbedBuilder()
+		.setColor("Gold")
+		.setThumbnail('attachment://Hive_ng_Fun-bee.png')
+		.setTitle('In development')
+		.addFields(
+			{ name: 'disabled', value: 'Coming soon!' },
+			)
+
+	await event.followUp({
+			embeds: [embed],
+			files: [file]
+		});
+};

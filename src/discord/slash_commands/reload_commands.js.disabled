@@ -1,0 +1,27 @@
+import {
+	AttachmentBuilder, SlashCommandBuilder, EmbedBuilder,
+	PermissionFlagsBits, InteractionContextType 
+} from 'discord.js';
+import commands from './slash_commands/index.js';
+
+export const data = new SlashCommandBuilder()
+				.setName("reload")
+				.setDescription("Reload comands")
+				.addStringOption((option) => 
+					option.setName('command')
+					.setDescription('The command to reload.')
+					.setRequired(false)
+					);
+
+export async function execute(event) {
+	const commandName = event.options.getString('command', true).toLowerCase();
+	const command = event.client.commands.get(commandName);
+
+	if (!command) {
+		for(const [key, value] of Object.entries(commands)) {
+				
+				
+				
+		}
+	}
+}
