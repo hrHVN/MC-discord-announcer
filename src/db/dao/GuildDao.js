@@ -12,6 +12,8 @@ export default class GuildDao {
   _falsePosetive;
   _disabledTimer;
   _disabledResetTimer;
+  _managerPwd;
+  _managerPort;
 
   constructor(data = {}) {
     this.setGuildId(data.guild_id);
@@ -28,6 +30,8 @@ export default class GuildDao {
     this.setFalsePosetive(data.false_posetive ?? false);
     this.setDisabledTimer(data.disabled_timer ?? null);
     this.setDisabledResetTimer(data.disabled_reset_timer ?? null);
+    this.setManagerPwd(data.manager_password ?? null);
+    this.setManagerPort(data.manager_port ?? null);
   }
 
   getGuildId() {
@@ -105,6 +109,26 @@ export default class GuildDao {
       throw new TypeError('rcon_pwd must be a string or null');
     }
     this._rconPwd = value;
+  }
+
+  getManagerPort() {
+    return this._managerPort;
+  }
+  setManagerPort(value) {
+    if (value !== null && (!Number.isInteger(value) || value < 0)) {
+      throw new TypeError('manager_port must be a non‑negative integer or null');
+    }
+    this._managerPort = parseInt(value);
+  }
+  
+  getManagerPwd() {
+    return this._managerPwd;
+  }
+  setManagerPwd(value) {
+    if (value !== null && typeof value !== 'string') {
+      throw new TypeError('manager_pwd must be a string or null');
+    }
+    this._managerPwd = value;
   }
 
   getMojavatar() { 

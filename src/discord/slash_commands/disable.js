@@ -1,9 +1,12 @@
 import {
 	AttachmentBuilder, SlashCommandBuilder, EmbedBuilder,
-	PermissionFlagsBits, InteractionContextType 
+	PermissionFlagsBits, InteractionContextType, MessageFlags
 } from 'discord.js';
 import GuildManager from '../../db/managers/GuildManager.js';
 import GuildMembersManager from '../../db/managers/GuildMembersManager.js';
+import websocketEvents from "../../minecraft_server/management_server/WebsocketEvents.js";
+import { servers } from "../../minecraft_server/management_server/ManagementServer.js";
+
 const guildManager = GuildManager.getInstance();
 const guildMembersManager = GuildMembersManager.getInstance();
 
@@ -15,16 +18,17 @@ export const data = new SlashCommandBuilder()
 		.setNSFW(false);
 
 export async function execute(event) {
-	await event.deferReply();
+	await event.deferReply({ flags: MessageFlags.Ephemeral });
 
 	const { guildId } = event;
 	const guildDto = await guildManager.getGuildById(guildId);
 
-	guildDto.setDisabled(true);
-	guildDto.setDisabledTimer(null);
-	guildDto.setDisabledResetTimer(null);
-	guildDto.setFalsePosetive(false);
+	if (Object.keys(servers).includes(guildId)) {
+		servers[guildId].close();
+		delete servers[guildId];
+	}
 
+	guildDto.setDisabled(true);
 	await guildManager.save(guildDto);
 
 	const guildMemberDto = (await guildMembersManager.getAllGuildMembers(guildId))
@@ -41,7 +45,6 @@ export async function execute(event) {
 		.setDescription(`The ${ guildDto.getGuildName() ? guildDto.getGuildName() : guildDto.getServerIp() } has been removed from the Query Loop!`);
 
 	await event.followUp({
-			ephemeral: true,
 			embeds: [embed],
 			files: [file]
 		});

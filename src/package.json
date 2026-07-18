@@ -1,11 +1,11 @@
 {
   "name": "discord-bot",
-  "version": "1.1.12",
+  "version": "1.2.0",
   "description": "a bot to listen for user logins on a minecraft server",
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon app.js",
+    "dev": "nodemon app1.js",
     "test": "node --test",
     "run": "node app.js",
     "git_all": "npm version patch --no-git-tag-version && git commit -a -m 'general update' && git push"

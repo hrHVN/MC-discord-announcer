@@ -53,18 +53,18 @@ export default class GuildMembersManager extends DatabaseManager {
 
 	async getMemeberByName(guild_id, member_name) {
 		try {
-			const rows = await this.query("SELECT * FROM guildmembers WHERE guild_id = ? AND member_name", 
-				[ guildId, member_name ]);		
-			return new guildMemberDao(row[0]);
+			const rows = await this.query("SELECT * FROM guildmembers WHERE guild_id = ? AND user_name = ?", 
+				[ guild_id, member_name ]);
+			return (rows.map(row => new GuildMemberDao(row)))[0];
 		}
 		catch (e) {
 			console.error("[ERROR] - GuildMembersManager.getMemeberByName(): %s - ", e.message, e);
 		}
 	}
 
-	async deleteGuild(guildId){
+	async deleteGuild(guild_id){
 		try {
-			return await this.query("DELETE FROM guildmembers WHERE guild_id = ?", [ guildId ]);
+			return await this.query("DELETE FROM guildmembers WHERE guild_id = ?", [ guild_id ]);
 		}
 		catch (e) {
 			console.error("[ERROR] - GuildMembersManager.deleteGuild(): %s - ", e.message, e);

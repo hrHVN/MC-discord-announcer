@@ -1,4 +1,4 @@
-import { REST, Routes } from 'discord.js';
+import { REST, Routes, SlashCommandBuilder } from 'discord.js';
 import path from 'node:path';
 import dotenv from 'dotenv';
 import commands from './slash_commands/index.js';
@@ -39,7 +39,7 @@ export default async function Guild_Update_Commands() {
 		console.info(`[INFO] Discord_Update_Commands - Started refreshing ${_commands.length} application (/) commands`);
 		
 		discord_restapi.put(
-			Routes.applicationCommands(process.env.DISCORD_ID),
+			Routes.applicationCommands(process.env.DISCORD_ID, process.env.DISCORD_DEV_GUILD),
 			{ body: _commands }
 		).then(response => {
 
@@ -52,3 +52,17 @@ export default async function Guild_Update_Commands() {
 		console.error("[INFO] Discord_Update_Commands - ", error);
 	}
 };
+
+async function reload_commands() {
+	try {
+		// Loop over commands then reload the command
+		for(const [key, value] of Object.entries(commands)) {
+			
+			
+			
+		}
+	}
+	catch (e) {
+		console.log("[ERROR] reload_commands - ", e)
+	};
+}

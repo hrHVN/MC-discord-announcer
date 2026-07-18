@@ -5,7 +5,6 @@ src/db/db_manager.sqbpro
 
 src/json/*.json
 src/avatars/*.png
-src/minecraft_server/management_server
 TestMain.js
 
 # Dependency directories

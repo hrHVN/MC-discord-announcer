@@ -74,11 +74,9 @@ export default class GuildManager extends DatabaseManager {
 
 	async getGuildById(guildId) {
 		try {
-			const rows = await this.query("SELECT * FROM guilds WHERE guild_id = ?", [guildId]);
-			
-			return rows[0] 
-			? new GuildDao(rows[0])
-			: null;
+			const rows = await this.query("SELECT * FROM guilds WHERE guild_id = ?", 
+				[ guildId ]);
+			return (rows.map(row => new GuildDao(row)))[0];
 		}
 		catch (e) {
 			console.error("[ERROR] - GuildManager.getGuildById(): %s - ", e.message, e);

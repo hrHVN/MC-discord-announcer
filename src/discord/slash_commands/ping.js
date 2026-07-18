@@ -8,7 +8,7 @@ export const data = new SlashCommandBuilder()
 		.setNSFW(false);
 
 export async function execute(event) {
-	await event.deferReply();
+	await event.deferReply({ flags: MessageFlags.Ephemeral });
 
 	const { guildId, user } = event;
 	const file = new AttachmentBuilder('./Hive_ng_Fun-bee.png');
@@ -19,7 +19,6 @@ export async function execute(event) {
 		.setDescription("pong")
 
 	await event.followUp({
-			ephemeral: true,
 			embeds: [embed],
 			files: [file]
 		});

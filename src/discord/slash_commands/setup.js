@@ -77,7 +77,7 @@ export const data = new SlashCommandBuilder()
 		.setNSFW(false);
 
 export async function execute(event) {
-	await event.deferReply();
+	await event.deferReply({ ephemeral: true });
 
 	const { guildId, user } = event;
 	const guildDto = await guildManager.getGuildById(guildId);
@@ -143,7 +143,6 @@ export async function execute(event) {
 		);
 
 	await event.followUp({
-			ephemeral: true,
 			embeds: [embed],
 			files: [file]
 		});

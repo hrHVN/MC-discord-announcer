@@ -13,8 +13,7 @@ export const data = new SlashCommandBuilder()
 		.setNSFW(false);
 
 export async function execute(event) {
-	await event.deferReply();
-
+	await event.deferReply({ flags: MessageFlags.Ephemeral });
 	const { guildId } = event;
 
 	const guildDto = await guildManager.getGuildById(guildId);
@@ -36,6 +35,8 @@ export async function execute(event) {
 				{ name: "AdminHook", value: `${guildDto.getAdminHook()}` },
 				{ name: "RCON Port", value: `${guildDto.getRconPort()}` },
 				{ name: "RCON Password", value: `${guildDto.getRconPwd()}` },
+				{ name: "Managment Port", value: `${guildDto.getManagerPort()}` },
+				{ name: "Managment Password", value: `${guildDto.getManagerPwd()}` },
 				{ name: "Avatar's", value: `
 Login: **${guildDto.getMojavatar().login.pose}**/ ${guildDto.getMojavatar().login.crop} 
 Logout: **${guildDto.getMojavatar().logout.pose}**/ ${guildDto.getMojavatar().logout.crop}
@@ -46,7 +47,6 @@ Logout: **${guildDto.getMojavatar().logout.pose}**/ ${guildDto.getMojavatar().lo
 			embed.setDescription('You need to run the \`/init\` command to initialize your server.');
 		}
 	await event.followUp({
-			ephemeral: true,
 			embeds: [embed],
 			files: [file]
 		});

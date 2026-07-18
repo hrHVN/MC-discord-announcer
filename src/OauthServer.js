@@ -10,6 +10,7 @@ dotenv.config();
 
 const app = express();
 
+
 app.get('/', (request, response) => {
 	return response.sendFile('index.html', { root: '.' });
 });

@@ -1,5 +1,5 @@
 import {
-	AttachmentBuilder, SlashCommandBuilder, EmbedBuilder 
+	AttachmentBuilder, SlashCommandBuilder, EmbedBuilder, MessageFlags
 } from 'discord.js';
 import path from 'node:path';
 
@@ -9,7 +9,7 @@ export const data = new SlashCommandBuilder()
 		.setNSFW(false);
 
 export async function execute(event) {
-	await event.deferReply();
+	await event.deferReply({ flags: MessageFlags.Ephemeral });
 	
 	const file = new AttachmentBuilder('./Hive_ng_Fun-bee.png');
 	
@@ -35,7 +35,6 @@ export async function execute(event) {
 			)
 
 	await event.followUp({
-			ephemeral: true,
 			embeds: [embed],
 			files: [file]
 		});

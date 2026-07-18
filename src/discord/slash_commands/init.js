@@ -28,12 +28,21 @@ export const data = new SlashCommandBuilder()
 			option
 				.setName('adminhook')
 				.setDescription('the webhook used for admin messages'))
+		.addStringOption(option =>
+			option
+				.setName('managment_port')
+				.setDescription('the port used for minecraft`s Management Server'))
+		.addStringOption(option =>
+			option
+				.setName('managment_password')
+				.setDescription('the port used for minecraft`s Management Server'))
+
 		.setContexts(InteractionContextType.Guild)
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 		.setNSFW(false);
 
 export async function execute(event) {
-	await event.deferReply();
+	await event.deferReply({ flags: MessageFlags.Ephemeral });
 	const { guildId, user } = event;
 	const newServer = new GuildDao({
 		guild_id: guildId,
@@ -48,6 +57,8 @@ export async function execute(event) {
 		false_posetive: false,
 		disabled_timer: null,
 		disabled_reset_timer: null,
+		manager_password: event.options.getString('managment_password'),
+		manager_port: event.options.getString('managment_port'),
 	});
 
 	await guildManager.save(newServer);
@@ -60,15 +71,15 @@ export async function execute(event) {
 		.addFields(
 			{ name: "ID", value: `${newServer.getGuildId()}` },
 			{ name: "WebHook", value: `${newServer.getWatcherHook()}` },
+			{ name: "AdminHook", value: `${newServer.getAdminHook()}` },
 			{ name: "Mincraft IP", value: `${newServer.getServerIp()}` },
 			{ name: "Query Port", value: `${newServer.getQueryPort()}` },
-			{ name: "RCON Port", value: `${newServer.getRconPort()}` },
-			{ name: "RCON Password", value: `${newServer.getRconPwd()}` },
+			{ name: "Management Server Port", value: `${newServer.getManagerPort()}` },
+			{ name: "Management Server Password", value: `${newServer.getManagerPwd()}` },
 			{ name: "Avatar's", value: `Login: **${newServer.getMojavatar().login.pose}** \nLogout: **${newServer.getMojavatar().logout.pose}**`}
 		);
 
 	await event.followUp({
-			ephemeral: true,
 			embeds: [embed],
 			files: [file]
 		});

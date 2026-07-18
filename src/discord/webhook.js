@@ -1,4 +1,4 @@
-import { WebhookClient } from 'discord.js'
+import { WebhookClient, MessageFlags, EmbedBuilder, AttachmentBuilder } from 'discord.js'
 
 /*
 	Use this hook to send status messages to the guild administrators
@@ -10,8 +10,19 @@ export async function AdminWebhook(hook, message) {
 			Too stop server spaming during testing.
 		*/
 		try {
-			message.username = "[BOT] Admin Hook";
-			await client.send(message);
+			const file = new AttachmentBuilder('./Hive_ng_Fun-bee.png');
+			const embed = new EmbedBuilder()
+				.setColor("Orange")
+				.setDescription('Generic server message')
+				.setThumbnail('attachment://Hive_ng_Fun-bee.png')
+				.setTitle(`${message}`)
+				.setTimestamp();
+
+			await client.send({
+				embeds: [embed],
+				files: [file],
+				username:  "[BOT] Admin Hook"
+			});
 			resolve();
 		}
 		catch (error){

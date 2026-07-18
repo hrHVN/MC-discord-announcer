@@ -1,8 +1,11 @@
 import {
 	AttachmentBuilder, SlashCommandBuilder, EmbedBuilder,
-	PermissionFlagsBits, InteractionContextType 
+	PermissionFlagsBits, InteractionContextType, MessageFlags
 } from 'discord.js';
 import GuildManager from '../../db/managers/GuildManager.js';
+import websocketEvents from "../../minecraft_server/management_server/WebsocketEvents.js";
+import { servers, MinecraftSocketeer } from "../../minecraft_server/management_server/ManagementServer.js";
+
 const guildManager = GuildManager.getInstance();
 
 export const data = new SlashCommandBuilder()
@@ -13,16 +16,22 @@ export const data = new SlashCommandBuilder()
 		.setNSFW(false);
 
 export async function execute(event) {
-	await event.deferReply();
+	await event.deferReply({ flags: MessageFlags.Ephemeral });
 
 	const { guildId } = event;
 	const guildDto = await guildManager.getGuildById(guildId);
 
-	guildDto.setDisabled(false);
-	guildDto.setDisabledTimer(null);
-	guildDto.setDisabledResetTimer(null);
-	guildDto.setFalsePosetive(false);
+	if (guildDto.getGuildId() && guildDto.getManagerPort() && guildDto.getManagerPwd()) {
+		servers[`${guildId}`] = new MinecraftSocketeer(
+			guildDto.getServerIp(),
+			guildDto.getManagerPort(),
+			guildDto.getManagerPwd(),
+			`${guildId}`
+			);	
+	}
 
+
+	guildDto.setDisabled(false);
 	await guildManager.save(guildDto);
 
 	const file = new AttachmentBuilder('./Hive_ng_Fun-bee.png');
@@ -33,7 +42,6 @@ export async function execute(event) {
 		.setDescription(`The ${ guildDto.getGuildName() ? guildDto.getGuildName() : guildDto.getServerIp() } has been added to the Query Loop again!`);
 
 	await event.followUp({
-			ephemeral: true,
 			embeds: [embed],
 			files: [file]
 		});
