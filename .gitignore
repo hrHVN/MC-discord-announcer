@@ -27,3 +27,13 @@ TestMain.js
 
 # package-lock
 *package-lock.json
+
+
+# Create .woodpecker.yml in your repository root with one of the configs above
+# Add repository secrets (Settings → Secrets)
+# 
+#     DOCKER_USERNAME — Your Docker registry username
+#     DOCKER_PWD — Your Docker registry password/token
+# 
+# Enable CI in repository Settings → Units
+# Request access to ci.codeberg.org if not using self-hosted runners
